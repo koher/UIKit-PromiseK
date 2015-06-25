@@ -1,5 +1,4 @@
 import UIKit
-import PromiseK
 
 extension UIView {
     public class func promisedAnimate(# duration: NSTimeInterval, delay: NSTimeInterval = 0.0, options: UIViewAnimationOptions = UIViewAnimationOptions.CurveEaseInOut | UIViewAnimationOptions.TransitionNone, animations: () -> Void) -> Promise<Bool> {
