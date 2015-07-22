@@ -16,11 +16,10 @@
 		D62CA99C1B35456F009E859D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D62CA99A1B35456F009E859D /* Main.storyboard */; };
 		D62CA99E1B35456F009E859D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D62CA99D1B35456F009E859D /* Images.xcassets */; };
 		D62CA9A11B35456F009E859D /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D62CA99F1B35456F009E859D /* LaunchScreen.xib */; };
-		D62CA9B51B3545BD009E859D /* PromiseK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D62CA9B41B3545BD009E859D /* PromiseK.framework */; };
-		D62CA9B61B3545BD009E859D /* PromiseK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D62CA9B41B3545BD009E859D /* PromiseK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D62CA9B81B354611009E859D /* PromiseK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D62CA9B41B3545BD009E859D /* PromiseK.framework */; };
 		D62CA9B91B354E79009E859D /* UIKitPromiseK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D62CA96B1B353E13009E859D /* UIKitPromiseK.framework */; };
 		D62CA9BA1B354E79009E859D /* UIKitPromiseK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D62CA96B1B353E13009E859D /* UIKitPromiseK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D6F336761B65C9C40073A177 /* PromiseK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6F336751B65C9C40073A177 /* PromiseK.framework */; };
+		D6F336771B65C9C40073A177 /* PromiseK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6F336751B65C9C40073A177 /* PromiseK.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,7 +46,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D62CA9B61B3545BD009E859D /* PromiseK.framework in Embed Frameworks */,
 				D62CA9BA1B354E79009E859D /* UIKitPromiseK.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -70,7 +68,7 @@
 		D62CA99B1B35456F009E859D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D62CA99D1B35456F009E859D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		D62CA9A01B35456F009E859D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		D62CA9B41B3545BD009E859D /* PromiseK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PromiseK.framework; path = Carthage/Build/iOS/PromiseK.framework; sourceTree = "<group>"; };
+		D6F336751B65C9C40073A177 /* PromiseK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PromiseK.framework; path = Carthage/Build/iOS/PromiseK.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,7 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D62CA9B81B354611009E859D /* PromiseK.framework in Frameworks */,
+				D6F336761B65C9C40073A177 /* PromiseK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,7 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D62CA9B51B3545BD009E859D /* PromiseK.framework in Frameworks */,
+				D6F336771B65C9C40073A177 /* PromiseK.framework in Frameworks */,
 				D62CA9B91B354E79009E859D /* UIKitPromiseK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -105,7 +103,7 @@
 		D62CA9611B353E13009E859D = {
 			isa = PBXGroup;
 			children = (
-				D62CA9B41B3545BD009E859D /* PromiseK.framework */,
+				D6F336751B65C9C40073A177 /* PromiseK.framework */,
 				D62CA96D1B353E13009E859D /* UIKitPromiseK */,
 				D62CA97A1B353E13009E859D /* UIKitPromiseKTests */,
 				D62CA9931B35456F009E859D /* UIKitPromiseKSample */,
@@ -254,6 +252,7 @@
 		D62CA9621B353E13009E859D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0630;
 				ORGANIZATIONNAME = koherent.org;
 				TargetAttributes = {

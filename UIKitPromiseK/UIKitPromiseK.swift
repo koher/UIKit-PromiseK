@@ -2,7 +2,7 @@ import UIKit
 import PromiseK
 
 extension UIView {
-    public class func promisedAnimate(# duration: NSTimeInterval, delay: NSTimeInterval = 0.0, options: UIViewAnimationOptions = UIViewAnimationOptions.CurveEaseInOut | UIViewAnimationOptions.TransitionNone, animations: () -> Void) -> Promise<Bool> {
+    public class func promisedAnimate(duration duration: NSTimeInterval, delay: NSTimeInterval = 0.0, options: UIViewAnimationOptions = [UIViewAnimationOptions.CurveEaseInOut, UIViewAnimationOptions.TransitionNone], animations: () -> Void) -> Promise<Bool> {
         return Promise<Bool> { resolve in
             UIView.animateWithDuration(duration, delay: delay, options: options, animations: animations) { finished in
                 resolve(Promise(finished))
@@ -12,7 +12,7 @@ extension UIView {
 }
 
 extension UIViewController {
-    public func promisedPresentAlertController<T>(title: String? = nil, message: String? = nil, preferredStyle: UIAlertControllerStyle, buttons: [(title: String, style: UIAlertActionStyle, value: T)]) -> Promise<T> {
+    public func promisedPresentAlertController<T>(title title: String? = nil, message: String? = nil, preferredStyle: UIAlertControllerStyle, buttons: [(title: String, style: UIAlertActionStyle, value: T)]) -> Promise<T> {
         return Promise { resolve in
             let alertController = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
             for button in buttons {
@@ -33,7 +33,7 @@ extension UIAlertView {
         return delegate.promise
     }
     
-    public class func promisedShow(title: String? = nil, message: String? = nil, cancelButtonTitle: String? = nil, buttonTitles: [String]) -> Promise<Int> {
+    public class func promisedShow(title title: String? = nil, message: String? = nil, cancelButtonTitle: String? = nil, buttonTitles: [String]) -> Promise<Int> {
         let alertView = UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle: cancelButtonTitle)
         for buttonTitle in buttonTitles {
             alertView.addButtonWithTitle(buttonTitle)
