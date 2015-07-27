@@ -1,5 +1,4 @@
 import UIKit
-import PromiseK
 
 extension UIView {
     public class func promisedAnimate(duration duration: NSTimeInterval, delay: NSTimeInterval = 0.0, options: UIViewAnimationOptions = [UIViewAnimationOptions.CurveEaseInOut, UIViewAnimationOptions.TransitionNone], animations: () -> Void) -> Promise<Bool> {
@@ -11,6 +10,7 @@ extension UIView {
     }
 }
 
+@available(iOS 8.0, *)
 extension UIViewController {
     public func promisedPresentAlertController<T>(title title: String? = nil, message: String? = nil, preferredStyle: UIAlertControllerStyle, buttons: [(title: String, style: UIAlertActionStyle, value: T)]) -> Promise<T> {
         return Promise { resolve in
