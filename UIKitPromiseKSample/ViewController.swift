@@ -10,7 +10,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func onPressActionButton(sender: UIButton) {
-        UIActionSheet.promisedShowInView(view, title: "Actions", buttonTitles: ["Animation", "AlertController", "AlertView", "ActionSheet"]).map { buttonIndex -> Void in
+        UIActionSheet.promisedShowInView(view, title: "Actions", cancelButtonTitle: "Cancel", buttonTitles: ["Animation", "AlertController", "AlertView", "ActionSheet"]).map { buttonIndex -> Void in
             switch buttonIndex {
             case 0:
                 self.doAnimate()
