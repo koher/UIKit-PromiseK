@@ -95,7 +95,7 @@ class ViewController: UIViewController {
     }
     
     private func doShowActionSheet() {
-        UIActionSheet.promisedShowInView(view, title: "Color of the square", buttonTitles: ["Red", "Green", "Blue"]).map { buttonIndex in
+        UIActionSheet.promisedShowInView(view, title: "Color of the square", cancelButtonTitle: "Cancel", buttonTitles: ["Red", "Green", "Blue"]).map { buttonIndex in
             switch buttonIndex {
             case 0:
                 return UIColor.redColor()
@@ -104,10 +104,12 @@ class ViewController: UIViewController {
             case 2:
                 return UIColor.blueColor()
             default:
-                fatalError("Never reaches here.")
+                return nil
             }
-        }.map { color in
-            self.square.backgroundColor = color
+        }.map { (colorOrNil: UIColor?) -> Void in
+            if let color = colorOrNil {
+                self.square.backgroundColor = color
+            }
         }
     }
 }
