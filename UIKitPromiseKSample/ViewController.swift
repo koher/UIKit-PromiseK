@@ -1,5 +1,4 @@
 import UIKit
-import PromiseK
 import UIKitPromiseK
 
 class ViewController: UIViewController {
@@ -11,23 +10,17 @@ class ViewController: UIViewController {
     }
     
     @IBAction func onPressActionButton(sender: UIButton) {
-        promisedPresentAlertController(title: "Actions", message: "Select an action.", preferredStyle: .ActionSheet, buttons: [
-            (title: "Animation", style: UIAlertActionStyle.Default, value: Action.Animation),
-            (title: "AlertController", style: UIAlertActionStyle.Default, value: Action.AlertController),
-            (title: "AlertView", style: UIAlertActionStyle.Default, value: Action.AlertView),
-            (title: "ActionSheet", style: UIAlertActionStyle.Default, value: Action.ActionSheet),
-            (title: "Cancel", style: UIAlertActionStyle.Cancel, value: Action.Cancel),
-        ]).map { action -> Void in
-            switch action {
-            case .Animation:
+        UIActionSheet.promisedShowInView(view, title: "Actions", buttonTitles: ["Animation", "AlertController", "AlertView", "ActionSheet"]).map { buttonIndex -> Void in
+            switch buttonIndex {
+            case 0:
                 self.doAnimate()
-            case .AlertController:
+            case 1:
                 self.doPresentAlertController()
-            case .AlertView:
+            case 2:
                 self.doShowAlertView()
-            case .ActionSheet:
+            case 3:
                 self.doShowActionSheet()
-            case .Cancel:
+            default:
                 break
             }
         }
