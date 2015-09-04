@@ -10,17 +10,23 @@ class ViewController: UIViewController {
     }
     
     @IBAction func onPressActionButton(sender: UIButton) {
-        UIActionSheet.promisedShowInView(view, title: "Actions", cancelButtonTitle: "Cancel", buttonTitles: ["Animation", "AlertController", "AlertView", "ActionSheet"]).map { buttonIndex -> Void in
-            switch buttonIndex {
-            case 0:
+        promisedPresentAlertController(title: "Actions", message: "Select an action.", preferredStyle: .ActionSheet, buttons: [
+            (title: "Animation", style: UIAlertActionStyle.Default, value: Action.Animation),
+            (title: "AlertController", style: UIAlertActionStyle.Default, value: Action.AlertController),
+            (title: "AlertView", style: UIAlertActionStyle.Default, value: Action.AlertView),
+            (title: "ActionSheet", style: UIAlertActionStyle.Default, value: Action.ActionSheet),
+            (title: "Cancel", style: UIAlertActionStyle.Cancel, value: Action.Cancel),
+        ]).map { action -> Void in
+            switch action {
+            case .Animation:
                 self.doAnimate()
-            case 1:
+            case .AlertController:
                 self.doPresentAlertController()
-            case 2:
+            case .AlertView:
                 self.doShowAlertView()
-            case 3:
+            case .ActionSheet:
                 self.doShowActionSheet()
-            default:
+            case .Cancel:
                 break
             }
         }
