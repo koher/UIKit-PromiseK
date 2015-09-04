@@ -60,8 +60,10 @@ class AlertViewDelegate: NSObject, UIAlertViewDelegate {
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
         resolve(Promise(buttonIndex))
         
-        zelf = nil
         resolve = nil
+        dispatch_async(dispatch_get_main_queue()) {
+            self.zelf = nil
+        }
     }
 }
 
@@ -74,9 +76,15 @@ extension UIActionSheet {
     }
 
     public class func promisedShowInView(view: UIView, title: String? = nil, cancelButtonTitle: String? = nil, destructiveButtonTitle: String? = nil, buttonTitles: [String]) -> Promise<Int> {
-        let actionSheet = UIActionSheet(title: title, delegate: nil, cancelButtonTitle: cancelButtonTitle, destructiveButtonTitle: destructiveButtonTitle)
+        let actionSheet = UIActionSheet(title: title, delegate: nil, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+        if let title = destructiveButtonTitle {
+            actionSheet.destructiveButtonIndex = actionSheet.addButtonWithTitle(title)
+        }
         for buttonTitle in buttonTitles {
             actionSheet.addButtonWithTitle(buttonTitle)
+        }
+        if let title = cancelButtonTitle {
+            actionSheet.cancelButtonIndex = actionSheet.addButtonWithTitle(title)
         }
         return actionSheet.promisedShowInView(view)
     }
@@ -99,8 +107,10 @@ class ActionSheetDelegate: NSObject, UIActionSheetDelegate {
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
         resolve(Promise(buttonIndex))
-        
-        zelf = nil
+
         resolve = nil
+        dispatch_async(dispatch_get_main_queue()) {
+            self.zelf = nil
+        }
     }
 }
