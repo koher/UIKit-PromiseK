@@ -60,8 +60,10 @@ class AlertViewDelegate: NSObject, UIAlertViewDelegate {
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
         resolve(Promise(buttonIndex))
         
-        zelf = nil
         resolve = nil
+        dispatch_async(dispatch_get_main_queue()) {
+            self.zelf = nil
+        }
     }
 }
 
@@ -105,8 +107,10 @@ class ActionSheetDelegate: NSObject, UIActionSheetDelegate {
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
         resolve(Promise(buttonIndex))
-        
-        zelf = nil
+
         resolve = nil
+        dispatch_async(dispatch_get_main_queue()) {
+            self.zelf = nil
+        }
     }
 }
