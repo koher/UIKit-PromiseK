@@ -18,7 +18,8 @@
 		D62CA9A11B35456F009E859D /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D62CA99F1B35456F009E859D /* LaunchScreen.xib */; };
 		D62CA9B91B354E79009E859D /* UIKitPromiseK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D62CA96B1B353E13009E859D /* UIKitPromiseK.framework */; };
 		D62CA9BA1B354E79009E859D /* UIKitPromiseK.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D62CA96B1B353E13009E859D /* UIKitPromiseK.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D6F336A21B65D4F30073A177 /* PromiseK.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F336A11B65D4F30073A177 /* PromiseK.swift */; };
+		D6AB2EEB1BEA0A7100BD97A2 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AB2EE71BEA0A7100BD97A2 /* Operators.swift */; settings = {ASSET_TAGS = (); }; };
+		D6AB2EEC1BEA0A7100BD97A2 /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AB2EE81BEA0A7100BD97A2 /* Promise.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,7 +68,8 @@
 		D62CA99B1B35456F009E859D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D62CA99D1B35456F009E859D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		D62CA9A01B35456F009E859D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		D6F336A11B65D4F30073A177 /* PromiseK.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PromiseK.swift; path = Carthage/Checkouts/PromiseK/Source/PromiseK.swift; sourceTree = "<group>"; };
+		D6AB2EE71BEA0A7100BD97A2 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
+		D6AB2EE81BEA0A7100BD97A2 /* Promise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Promise.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,20 +176,22 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		D6AB2EE51BEA0A7100BD97A2 /* PromiseK */ = {
+			isa = PBXGroup;
+			children = (
+				D6AB2EE71BEA0A7100BD97A2 /* Operators.swift */,
+				D6AB2EE81BEA0A7100BD97A2 /* Promise.swift */,
+			);
+			name = PromiseK;
+			path = Carthage/Checkouts/PromiseK/Source;
+			sourceTree = "<group>";
+		};
 		D6F3369F1B65D4C20073A177 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				D6F336A01B65D4CA0073A177 /* PromiseK */,
+				D6AB2EE51BEA0A7100BD97A2 /* PromiseK */,
 			);
 			name = Libraries;
-			sourceTree = "<group>";
-		};
-		D6F336A01B65D4CA0073A177 /* PromiseK */ = {
-			isa = PBXGroup;
-			children = (
-				D6F336A11B65D4F30073A177 /* PromiseK.swift */,
-			);
-			name = PromiseK;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -333,7 +337,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				D62CA9881B353E35009E859D /* UIKitPromiseK.swift in Sources */,
-				D6F336A21B65D4F30073A177 /* PromiseK.swift in Sources */,
+				D6AB2EEB1BEA0A7100BD97A2 /* Operators.swift in Sources */,
+				D6AB2EEC1BEA0A7100BD97A2 /* Promise.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

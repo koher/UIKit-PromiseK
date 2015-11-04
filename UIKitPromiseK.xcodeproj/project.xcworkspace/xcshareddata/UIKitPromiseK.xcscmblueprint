@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "FCB906B13EA3974BF093AD1418D24FE4D0A2403C",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "166D8BA51C37E63CEDDC542FB43FF430633EDBDC" : 0,
+    "FCB906B13EA3974BF093AD1418D24FE4D0A2403C" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "EE552C33-CB62-4360-86BC-F412D1A9A63F",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "166D8BA51C37E63CEDDC542FB43FF430633EDBDC" : "..\/..",
+    "FCB906B13EA3974BF093AD1418D24FE4D0A2403C" : "UIKit-PromiseK\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "UIKitPromiseK",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "UIKitPromiseK.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "ghe.qar.jp:qoncept\/plus-ar-catalog-2015.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "166D8BA51C37E63CEDDC542FB43FF430633EDBDC"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/koher\/UIKit-PromiseK.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "FCB906B13EA3974BF093AD1418D24FE4D0A2403C"
+    }
+  ]
+}

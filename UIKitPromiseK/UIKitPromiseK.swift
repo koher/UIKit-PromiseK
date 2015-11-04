@@ -13,6 +13,46 @@ extension UIView {
 @available(iOS 8.0, *)
 extension UIViewController {
     public func promisedPresentAlertController<T>(title title: String? = nil, message: String? = nil, preferredStyle: UIAlertControllerStyle, buttons: [(title: String, style: UIAlertActionStyle, value: T)]) -> Promise<T> {
+        if NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1 {
+            let (cancelButton, destructiveButton, buttons) : (cancelButton: (title: String, style: UIAlertActionStyle, value: T)?, destructiveButton: (title: String, style: UIAlertActionStyle, value: T)?, buttons: [(title: String, style: UIAlertActionStyle, value: T)]) = buttons.reduce((cancelButton: nil, destructiveButton: nil, buttons: [])) { (var result, button) in
+                switch button.style {
+                case .Default:
+                    result.buttons.append(button)
+                    break
+                case .Cancel:
+                    result.cancelButton = button
+                    break
+                case .Destructive:
+                    result.destructiveButton = button
+                    break
+                }
+                return result
+            }
+            
+            switch preferredStyle {
+            case .Alert:
+                return UIAlertView.promisedShow(title: title, message: message, cancelButtonTitle: cancelButton?.title, buttonTitles: buttons.map { $0.title }).map { $0 - (cancelButton != nil ? 1 : 0) }.map { buttonIndex in
+                    switch buttonIndex {
+                    case -1:
+                        return cancelButton!.value
+                    default:
+                        return buttons[buttonIndex].value
+                    }
+                }
+            case .ActionSheet:
+                return UIActionSheet.promisedShowInView(self.view, title: title, cancelButtonTitle: cancelButton?.title, destructiveButtonTitle: destructiveButton?.title, buttonTitles: buttons.map { $0.title }).map { $0 - (destructiveButton != nil ? 1 : 0) }.map { buttonIndex in
+                    switch buttonIndex {
+                    case -1:
+                        return destructiveButton!.value
+                    case buttons.count:
+                        return cancelButton!.value
+                    default:
+                        return buttons[buttonIndex].value
+                    }
+                }
+            }
+        }
+        
         return Promise { resolve in
             let alertController = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
             for button in buttons {
@@ -60,8 +100,10 @@ class AlertViewDelegate: NSObject, UIAlertViewDelegate {
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
         resolve(Promise(buttonIndex))
         
-        zelf = nil
         resolve = nil
+        dispatch_async(dispatch_get_main_queue()) {
+            self.zelf = nil
+        }
     }
 }
 
@@ -74,9 +116,15 @@ extension UIActionSheet {
     }
 
     public class func promisedShowInView(view: UIView, title: String? = nil, cancelButtonTitle: String? = nil, destructiveButtonTitle: String? = nil, buttonTitles: [String]) -> Promise<Int> {
-        let actionSheet = UIActionSheet(title: title, delegate: nil, cancelButtonTitle: cancelButtonTitle, destructiveButtonTitle: destructiveButtonTitle)
+        let actionSheet = UIActionSheet(title: title, delegate: nil, cancelButtonTitle: nil, destructiveButtonTitle: nil)
+        if let title = destructiveButtonTitle {
+            actionSheet.destructiveButtonIndex = actionSheet.addButtonWithTitle(title)
+        }
         for buttonTitle in buttonTitles {
             actionSheet.addButtonWithTitle(buttonTitle)
+        }
+        if let title = cancelButtonTitle {
+            actionSheet.cancelButtonIndex = actionSheet.addButtonWithTitle(title)
         }
         return actionSheet.promisedShowInView(view)
     }
@@ -99,8 +147,10 @@ class ActionSheetDelegate: NSObject, UIActionSheetDelegate {
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
         resolve(Promise(buttonIndex))
-        
-        zelf = nil
+
         resolve = nil
+        dispatch_async(dispatch_get_main_queue()) {
+            self.zelf = nil
+        }
     }
 }
