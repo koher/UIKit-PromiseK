@@ -17,7 +17,10 @@ class ViewController: UIViewController {
             (title: "AlertView", style: UIAlertActionStyle.Default, value: Action.AlertView),
             (title: "ActionSheet", style: UIAlertActionStyle.Default, value: Action.ActionSheet),
             (title: "Cancel", style: UIAlertActionStyle.Cancel, value: Action.Cancel),
-        ]).map { action -> Void in
+            ]) { popoverPresentationController in
+                popoverPresentationController.sourceView = self.actionButton
+                popoverPresentationController.sourceRect = self.actionButton.bounds
+            }.map { action -> Void in
             switch action {
             case .Animation:
                 self.doAnimate()

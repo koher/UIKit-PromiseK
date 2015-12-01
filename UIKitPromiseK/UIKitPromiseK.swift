@@ -12,7 +12,7 @@ extension UIView {
 }
 
 extension UIViewController {
-    public func promisedPresentAlertController<T>(title title: String? = nil, message: String? = nil, preferredStyle: UIAlertControllerStyle, buttons: [(title: String, style: UIAlertActionStyle, value: T)]) -> Promise<T> {
+    public func promisedPresentAlertController<T>(title title: String? = nil, message: String? = nil, preferredStyle: UIAlertControllerStyle, buttons: [(title: String, style: UIAlertActionStyle, value: T)], configurePopoverPresentation: (UIPopoverPresentationController -> ())? = nil) -> Promise<T> {
         if NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1 {
             let (cancelButton, destructiveButton, buttons) : (cancelButton: (title: String, style: UIAlertActionStyle, value: T)?, destructiveButton: (title: String, style: UIAlertActionStyle, value: T)?, buttons: [(title: String, style: UIAlertActionStyle, value: T)]) = buttons.reduce((cancelButton: nil, destructiveButton: nil, buttons: [])) { (var result, button) in
                 switch button.style {
@@ -60,6 +60,8 @@ extension UIViewController {
                     resolve(Promise(button.value))
                 })
             }
+            _ = alertController.popoverPresentationController.map { configurePopoverPresentation?($0) }
+            
             self.presentViewController(alertController, animated: true, completion: nil)
         }
     }
