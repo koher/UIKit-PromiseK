@@ -2,9 +2,9 @@ import UIKit
 import PromiseK
 
 extension UIView {
-    public class func promisedAnimate(duration duration: NSTimeInterval, delay: NSTimeInterval = 0.0, options: UIViewAnimationOptions = [UIViewAnimationOptions.CurveEaseInOut, UIViewAnimationOptions.TransitionNone], animations: () -> Void) -> Promise<Bool> {
+    public class func promisedAnimate(withDuration duration: TimeInterval, delay: TimeInterval = 0.0, options: UIViewAnimationOptions = [UIViewAnimationOptions.curveEaseInOut], animations: @escaping () -> Void) -> Promise<Bool> {
         return Promise<Bool> { resolve in
-            UIView.animateWithDuration(duration, delay: delay, options: options, animations: animations) { finished in
+            UIView.animate(withDuration: duration, delay: delay, options: options, animations: animations) { finished in
                 resolve(Promise(finished))
             }
         }
@@ -12,17 +12,18 @@ extension UIView {
 }
 
 extension UIViewController {
-    public func promisedPresentAlertController<T>(title title: String? = nil, message: String? = nil, preferredStyle: UIAlertControllerStyle, buttons: [(title: String, style: UIAlertActionStyle, value: T)], configurePopoverPresentation: (UIPopoverPresentationController -> ())? = nil) -> Promise<T> {
+    public func promisedPresentAlertController<T>(title: String? = nil, message: String? = nil, preferredStyle: UIAlertControllerStyle, buttons: [(title: String, style: UIAlertActionStyle, value: T)], configurePopoverPresentation: ((UIPopoverPresentationController) -> ())? = nil) -> Promise<T> {
         if NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1 {
-            let (cancelButton, destructiveButton, buttons) : (cancelButton: (title: String, style: UIAlertActionStyle, value: T)?, destructiveButton: (title: String, style: UIAlertActionStyle, value: T)?, buttons: [(title: String, style: UIAlertActionStyle, value: T)]) = buttons.reduce((cancelButton: nil, destructiveButton: nil, buttons: [])) { (var result, button) in
+            let (cancelButton, destructiveButton, buttons) : (cancelButton: (title: String, style: UIAlertActionStyle, value: T)?, destructiveButton: (title: String, style: UIAlertActionStyle, value: T)?, buttons: [(title: String, style: UIAlertActionStyle, value: T)]) = buttons.reduce((cancelButton: nil, destructiveButton: nil, buttons: [])) { (result_, button) in
+                var result = result_
                 switch button.style {
-                case .Default:
+                case .default:
                     result.buttons.append(button)
                     break
-                case .Cancel:
+                case .cancel:
                     result.cancelButton = button
                     break
-                case .Destructive:
+                case .destructive:
                     result.destructiveButton = button
                     break
                 }
@@ -30,7 +31,7 @@ extension UIViewController {
             }
             
             switch preferredStyle {
-            case .Alert:
+            case .alert:
                 return UIAlertView.promisedShow(title: title, message: message, cancelButtonTitle: cancelButton?.title, buttonTitles: buttons.map { $0.title }).map { $0 - (cancelButton != nil ? 1 : 0) }.map { buttonIndex in
                     switch buttonIndex {
                     case -1:
@@ -39,7 +40,7 @@ extension UIViewController {
                         return buttons[buttonIndex].value
                     }
                 }
-            case .ActionSheet:
+            case .actionSheet:
                 return UIActionSheet.promisedShowInView(self.view, title: title, cancelButtonTitle: cancelButton?.title, destructiveButtonTitle: destructiveButton?.title, buttonTitles: buttons.map { $0.title }).map { $0 - (destructiveButton != nil ? 1 : 0) }.map { buttonIndex in
                     switch buttonIndex {
                     case -1:
@@ -62,7 +63,7 @@ extension UIViewController {
             }
             _ = alertController.popoverPresentationController.map { configurePopoverPresentation?($0) }
             
-            self.presentViewController(alertController, animated: true, completion: nil)
+            self.present(alertController, animated: true, completion: nil)
         }
     }
 }
@@ -75,20 +76,20 @@ extension UIAlertView {
         return delegate.promise
     }
     
-    public class func promisedShow(title title: String? = nil, message: String? = nil, cancelButtonTitle: String? = nil, buttonTitles: [String]) -> Promise<Int> {
+    public class func promisedShow(title: String? = nil, message: String? = nil, cancelButtonTitle: String? = nil, buttonTitles: [String]) -> Promise<Int> {
         let alertView = UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle: cancelButtonTitle)
         for buttonTitle in buttonTitles {
-            alertView.addButtonWithTitle(buttonTitle)
+            alertView.addButton(withTitle: buttonTitle)
         }
         return alertView.promisedShow()
     }
 }
 
 class AlertViewDelegate: NSObject, UIAlertViewDelegate {
-    private var zelf: AlertViewDelegate!
+    fileprivate var zelf: AlertViewDelegate!
     
-    private var resolve: (Promise<Int> -> Void)!
-    private var promise: Promise<Int>!
+    fileprivate var resolve: ((Promise<Int>) -> Void)!
+    fileprivate var promise: Promise<Int>!
     
     override init() {
         super.init()
@@ -99,44 +100,44 @@ class AlertViewDelegate: NSObject, UIAlertViewDelegate {
         }
     }
     
-    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+    func alertView(_ alertView: UIAlertView, clickedButtonAt buttonIndex: Int) {
         resolve(Promise(buttonIndex))
         
         resolve = nil
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             self.zelf = nil
         }
     }
 }
 
 extension UIActionSheet {
-    public func promisedShowInView(view: UIView) -> Promise<Int> {
+    public func promisedShowInView(_ view: UIView) -> Promise<Int> {
         let delegate = ActionSheetDelegate()
         self.delegate = delegate
-        showInView(view)
+        show(in: view)
         return delegate.promise
     }
 
-    public class func promisedShowInView(view: UIView, title: String? = nil, cancelButtonTitle: String? = nil, destructiveButtonTitle: String? = nil, buttonTitles: [String]) -> Promise<Int> {
+    public class func promisedShowInView(_ view: UIView, title: String? = nil, cancelButtonTitle: String? = nil, destructiveButtonTitle: String? = nil, buttonTitles: [String]) -> Promise<Int> {
         let actionSheet = UIActionSheet(title: title, delegate: nil, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         if let title = destructiveButtonTitle {
-            actionSheet.destructiveButtonIndex = actionSheet.addButtonWithTitle(title)
+            actionSheet.destructiveButtonIndex = actionSheet.addButton(withTitle: title)
         }
         for buttonTitle in buttonTitles {
-            actionSheet.addButtonWithTitle(buttonTitle)
+            actionSheet.addButton(withTitle: buttonTitle)
         }
         if let title = cancelButtonTitle {
-            actionSheet.cancelButtonIndex = actionSheet.addButtonWithTitle(title)
+            actionSheet.cancelButtonIndex = actionSheet.addButton(withTitle: title)
         }
         return actionSheet.promisedShowInView(view)
     }
 }
 
 class ActionSheetDelegate: NSObject, UIActionSheetDelegate {
-    private var zelf: ActionSheetDelegate!
+    fileprivate var zelf: ActionSheetDelegate!
     
-    private var resolve: (Promise<Int> -> Void)!
-    private var promise: Promise<Int>!
+    fileprivate var resolve: ((Promise<Int>) -> Void)!
+    fileprivate var promise: Promise<Int>!
     
     override init() {
         super.init()
@@ -147,11 +148,11 @@ class ActionSheetDelegate: NSObject, UIActionSheetDelegate {
         }
     }
     
-    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+    func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
         resolve(Promise(buttonIndex))
 
         resolve = nil
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             self.zelf = nil
         }
     }

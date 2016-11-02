@@ -6,82 +6,82 @@ class ViewController: UIViewController {
     @IBOutlet var square: UIView!
     @IBOutlet var actionButton: UIButton!
     
-    private enum Action {
-        case Animation, AlertController, AlertView, ActionSheet, Cancel
+    fileprivate enum Action {
+        case animation, alertController, alertView, actionSheet, cancel
     }
     
-    @IBAction func onPressActionButton(sender: UIButton) {
-        promisedPresentAlertController(title: "Actions", message: "Select an action.", preferredStyle: .ActionSheet, buttons: [
-            (title: "Animation", style: UIAlertActionStyle.Default, value: Action.Animation),
-            (title: "AlertController", style: UIAlertActionStyle.Default, value: Action.AlertController),
-            (title: "AlertView", style: UIAlertActionStyle.Default, value: Action.AlertView),
-            (title: "ActionSheet", style: UIAlertActionStyle.Default, value: Action.ActionSheet),
-            (title: "Cancel", style: UIAlertActionStyle.Cancel, value: Action.Cancel),
-            ]) { popoverPresentationController in
+    @IBAction func onPressActionButton(_ sender: UIButton) {
+        _ = promisedPresentAlertController(title: "Actions", message: "Select an action.", preferredStyle: .actionSheet, buttons: [
+            (title: "Animation", style: UIAlertActionStyle.default, value: Action.animation),
+            (title: "AlertController", style: UIAlertActionStyle.default, value: Action.alertController),
+            (title: "AlertView", style: UIAlertActionStyle.default, value: Action.alertView),
+            (title: "ActionSheet", style: UIAlertActionStyle.default, value: Action.actionSheet),
+            (title: "Cancel", style: UIAlertActionStyle.cancel, value: Action.cancel),
+        ]) { popoverPresentationController in
                 popoverPresentationController.sourceView = self.actionButton
                 popoverPresentationController.sourceRect = self.actionButton.bounds
-            }.map { action -> Void in
+        }.map { (action: Action) -> Void in
             switch action {
-            case .Animation:
+            case .animation:
                 self.doAnimate()
-            case .AlertController:
+            case .alertController:
                 self.doPresentAlertController()
-            case .AlertView:
+            case .alertView:
                 self.doShowAlertView()
-            case .ActionSheet:
+            case .actionSheet:
                 self.doShowActionSheet()
-            case .Cancel:
+            case .cancel:
                 break
             }
         }
     }
     
-    private func doAnimate() {
-        actionButton.enabled = false
+    fileprivate func doAnimate() {
+        actionButton.isEnabled = false
         
-        UIView.promisedAnimate(duration: 0.5) {
+        _ = UIView.promisedAnimate(withDuration: 0.5) {
             self.square.frame.origin.x += 100
         }.flatMap { finished in
-            UIView.promisedAnimate(duration: 0.5) {
+            UIView.promisedAnimate(withDuration: 0.5) {
                 self.square.frame.origin.y += 100
             }
         }.flatMap { finished in
-            UIView.promisedAnimate(duration: 0.6) {
+            UIView.promisedAnimate(withDuration: 0.6) {
                 self.square.frame.origin.x -= 200
             }
         }.flatMap { finished in
-            UIView.promisedAnimate(duration: 0.6) {
+            UIView.promisedAnimate(withDuration: 0.6) {
                 self.square.frame.origin.y -= 200
             }
         }.flatMap { finished in
-            UIView.promisedAnimate(duration: 0.6) {
+            UIView.promisedAnimate(withDuration: 0.6) {
                 self.square.frame.origin.x += 200
             }
         }.flatMap { finished in
-            UIView.promisedAnimate(duration: 0.5) {
+            UIView.promisedAnimate(withDuration: 0.5) {
                 self.square.frame.origin.y += 100
             }
         }.flatMap { finished in
-            UIView.promisedAnimate(duration: 0.5) {
+            UIView.promisedAnimate(withDuration: 0.5) {
                 self.square.frame.origin.x -= 100
             }
         }.flatMap { finished in
-            UIView.promisedAnimate(duration: 0.5) {
+            UIView.promisedAnimate(withDuration: 0.5) {
                 self.square.alpha = 0.0
             }
         }.flatMap { finished in
-            UIView.promisedAnimate(duration: 0.5, delay: 0.5) {
+            UIView.promisedAnimate(withDuration: 0.5, delay: 0.5) {
                 self.square.alpha = 1.0
             }
         }.map { finished in
-            self.actionButton.enabled = true
+            self.actionButton.isEnabled = true
         }
     }
     
-    private func doPresentAlertController() {
-        promisedPresentAlertController(title: "Confirmation", message: "Do you want to animate the square?", preferredStyle: .Alert, buttons: [
-            (title: "No", style: .Cancel, value: false),
-            (title: "Yes", style: .Default, value: true),
+    fileprivate func doPresentAlertController() {
+        _ = promisedPresentAlertController(title: "Confirmation", message: "Do you want to animate the square?", preferredStyle: .alert, buttons: [
+            (title: "No", style: .cancel, value: false),
+            (title: "Yes", style: .default, value: true),
         ]).map { answer -> Void in
             if answer {
                 self.doAnimate()
@@ -89,23 +89,23 @@ class ViewController: UIViewController {
         }
     }
     
-    private func doShowAlertView() {
-        UIAlertView.promisedShow(title: "Confirmation", message: "Do you want to animate the square?", cancelButtonTitle: "No", buttonTitles: ["Yes"]).map { buttonIndex -> Void in
+    fileprivate func doShowAlertView() {
+        _ = UIAlertView.promisedShow(title: "Confirmation", message: "Do you want to animate the square?", cancelButtonTitle: "No", buttonTitles: ["Yes"]).map { buttonIndex -> Void in
             if buttonIndex == 1 {
                 self.doAnimate()
             }
         }
     }
     
-    private func doShowActionSheet() {
-        UIActionSheet.promisedShowInView(view, title: "Color of the square", cancelButtonTitle: "Cancel", buttonTitles: ["Red", "Green", "Blue"]).map { buttonIndex in
+    fileprivate func doShowActionSheet() {
+        _ = UIActionSheet.promisedShowInView(view, title: "Color of the square", cancelButtonTitle: "Cancel", buttonTitles: ["Red", "Green", "Blue"]).map { buttonIndex in
             switch buttonIndex {
             case 0:
-                return UIColor.redColor()
+                return UIColor.red
             case 1:
-                return UIColor.greenColor()
+                return UIColor.green
             case 2:
-                return UIColor.blueColor()
+                return UIColor.blue
             default:
                 return nil
             }
