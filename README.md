@@ -4,25 +4,25 @@ UIKit-PromiseK
 _UIKit-PromiseK_ provides extensions of _UIKit_ to collaborate with [_PromiseK_](https://github.com/koher/PromiseK/).
 
 ```swift
-UIView.promisedAnimate(duration: 0.5) {
+_ = UIView.promisedAnimate(withDuration: 0.5) {
     self.square.frame.origin.x += 100
 }.flatMap { finished in
-    UIView.promisedAnimate(duration: 0.5) {
+    UIView.promisedAnimate(withDuration: 0.5) {
         self.square.frame.origin.y += 100
     }
 }.flatMap { finished in
-    UIView.promisedAnimate(duration: 0.5) {
+    UIView.promisedAnimate(withDuration: 0.5) {
         self.square.alpha = 0.0
     }
 }
 
-promisedPresentAlertController(
-    title: "Title",
+_ = promisedPresentAlertController(
+    withTitle: "Title",
     message: "Message",
-     preferredStyle: .Alert,
+    preferredStyle: .alert,
     buttons: [
-        (title: "No", style: .Cancel, value: false),
-        (title: "Yes", style: .Default, value: true),
+        (title: "No", style: .cancel, value: false),
+        (title: "Yes", style: .default, value: true),
     ]
 ).map { answer -> Void in
     if answer {
