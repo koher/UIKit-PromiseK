@@ -260,6 +260,7 @@
 					};
 					D62CA9751B353E13009E859D = {
 						CreatedOnToolsVersion = 6.3.2;
+						LastSwiftMigration = 0830;
 					};
 					D62CA9911B35456F009E859D = {
 						CreatedOnToolsVersion = 6.3.2;
@@ -521,6 +522,7 @@
 				INFOPLIST_FILE = UIKitPromiseKTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -534,6 +536,7 @@
 				INFOPLIST_FILE = UIKitPromiseKTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
