@@ -1,1 +1,1 @@
-github "koher/PromiseK" "swift-3"
+github "koher/PromiseK" ~> 2.4
