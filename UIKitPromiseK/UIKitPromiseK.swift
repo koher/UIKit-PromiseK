@@ -13,47 +13,6 @@ extension UIView {
 
 extension UIViewController {
     public func promisedPresentAlertController<T>(title: String? = nil, message: String? = nil, preferredStyle: UIAlertControllerStyle, buttons: [(title: String, style: UIAlertActionStyle, value: T)], configurePopoverPresentation: ((UIPopoverPresentationController) -> ())? = nil) -> Promise<T> {
-        if NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1 {
-            let (cancelButton, destructiveButton, buttons) : (cancelButton: (title: String, style: UIAlertActionStyle, value: T)?, destructiveButton: (title: String, style: UIAlertActionStyle, value: T)?, buttons: [(title: String, style: UIAlertActionStyle, value: T)]) = buttons.reduce((cancelButton: nil, destructiveButton: nil, buttons: [])) { (result_, button) in
-                var result = result_
-                switch button.style {
-                case .default:
-                    result.buttons.append(button)
-                    break
-                case .cancel:
-                    result.cancelButton = button
-                    break
-                case .destructive:
-                    result.destructiveButton = button
-                    break
-                }
-                return result
-            }
-            
-            switch preferredStyle {
-            case .alert:
-                return UIAlertView.promisedShow(title: title, message: message, cancelButtonTitle: cancelButton?.title, buttonTitles: buttons.map { $0.title }).map { $0 - (cancelButton != nil ? 1 : 0) }.map { buttonIndex in
-                    switch buttonIndex {
-                    case -1:
-                        return cancelButton!.value
-                    default:
-                        return buttons[buttonIndex].value
-                    }
-                }
-            case .actionSheet:
-                return UIActionSheet.promisedShowInView(self.view, title: title, cancelButtonTitle: cancelButton?.title, destructiveButtonTitle: destructiveButton?.title, buttonTitles: buttons.map { $0.title }).map { $0 - (destructiveButton != nil ? 1 : 0) }.map { buttonIndex in
-                    switch buttonIndex {
-                    case -1:
-                        return destructiveButton!.value
-                    case buttons.count:
-                        return cancelButton!.value
-                    default:
-                        return buttons[buttonIndex].value
-                    }
-                }
-            }
-        }
-        
         return Promise { resolve in
             let alertController = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
             for button in buttons {
