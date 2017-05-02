@@ -11,7 +11,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func onPressActionButton(_ sender: UIButton) {
-        _ = promisedPresentAlertController(title: "Actions", message: "Select an action.", preferredStyle: .actionSheet, buttons: [
+        _ = promisedPresentAlertController(withTitle: "Actions", message: "Select an action.", preferredStyle: .actionSheet, buttons: [
             (title: "Animation", style: UIAlertActionStyle.default, value: Action.animation),
             (title: "AlertController", style: UIAlertActionStyle.default, value: Action.alertController),
             (title: "AlertView", style: UIAlertActionStyle.default, value: Action.alertView),
@@ -79,7 +79,7 @@ class ViewController: UIViewController {
     }
     
     fileprivate func doPresentAlertController() {
-        _ = promisedPresentAlertController(title: "Confirmation", message: "Do you want to animate the square?", preferredStyle: .alert, buttons: [
+        _ = promisedPresentAlertController(withTitle: "Confirmation", message: "Do you want to animate the square?", preferredStyle: .alert, buttons: [
             (title: "No", style: .cancel, value: false),
             (title: "Yes", style: .default, value: true),
         ]).map { answer -> Void in
@@ -90,7 +90,7 @@ class ViewController: UIViewController {
     }
     
     fileprivate func doShowAlertView() {
-        _ = UIAlertView.promisedShow(title: "Confirmation", message: "Do you want to animate the square?", cancelButtonTitle: "No", buttonTitles: ["Yes"]).map { buttonIndex -> Void in
+        _ = UIAlertView.promisedShow(withTitle: "Confirmation", message: "Do you want to animate the square?", cancelButtonTitle: "No", buttonTitles: ["Yes"]).map { buttonIndex -> Void in
             if buttonIndex == 1 {
                 self.doAnimate()
             }
@@ -98,7 +98,7 @@ class ViewController: UIViewController {
     }
     
     fileprivate func doShowActionSheet() {
-        _ = UIActionSheet.promisedShowInView(view, title: "Color of the square", cancelButtonTitle: "Cancel", buttonTitles: ["Red", "Green", "Blue"]).map { buttonIndex in
+        _ = UIActionSheet.promisedShow(in: view, withTitle: "Color of the square", cancelButtonTitle: "Cancel", buttonTitles: ["Red", "Green", "Blue"]).map { buttonIndex in
             switch buttonIndex {
             case 0:
                 return UIColor.red

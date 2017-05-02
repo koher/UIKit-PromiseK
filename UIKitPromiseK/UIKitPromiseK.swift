@@ -12,7 +12,7 @@ extension UIView {
 }
 
 extension UIViewController {
-    public func promisedPresentAlertController<T>(title: String? = nil, message: String? = nil, preferredStyle: UIAlertControllerStyle, buttons: [(title: String, style: UIAlertActionStyle, value: T)], configurePopoverPresentation: ((UIPopoverPresentationController) -> ())? = nil) -> Promise<T> {
+    public func promisedPresentAlertController<T>(withTitle title: String? = nil, message: String? = nil, preferredStyle: UIAlertControllerStyle, buttons: [(title: String, style: UIAlertActionStyle, value: T)], configurePopoverPresentation: ((UIPopoverPresentationController) -> ())? = nil) -> Promise<T> {
         return Promise { resolve in
             let alertController = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
             for button in buttons {
@@ -35,7 +35,7 @@ extension UIAlertView {
         return delegate.promise
     }
     
-    public class func promisedShow(title: String? = nil, message: String? = nil, cancelButtonTitle: String? = nil, buttonTitles: [String]) -> Promise<Int> {
+    public class func promisedShow(withTitle title: String? = nil, message: String? = nil, cancelButtonTitle: String? = nil, buttonTitles: [String]) -> Promise<Int> {
         let alertView = UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle: cancelButtonTitle)
         for buttonTitle in buttonTitles {
             alertView.addButton(withTitle: buttonTitle)
@@ -70,14 +70,14 @@ class AlertViewDelegate: NSObject, UIAlertViewDelegate {
 }
 
 extension UIActionSheet {
-    public func promisedShowInView(_ view: UIView) -> Promise<Int> {
+    public func promisedShow(in view: UIView) -> Promise<Int> {
         let delegate = ActionSheetDelegate()
         self.delegate = delegate
         show(in: view)
         return delegate.promise
     }
 
-    public class func promisedShowInView(_ view: UIView, title: String? = nil, cancelButtonTitle: String? = nil, destructiveButtonTitle: String? = nil, buttonTitles: [String]) -> Promise<Int> {
+    public class func promisedShow(in view: UIView, withTitle title: String? = nil, cancelButtonTitle: String? = nil, destructiveButtonTitle: String? = nil, buttonTitles: [String]) -> Promise<Int> {
         let actionSheet = UIActionSheet(title: title, delegate: nil, cancelButtonTitle: nil, destructiveButtonTitle: nil)
         if let title = destructiveButtonTitle {
             actionSheet.destructiveButtonIndex = actionSheet.addButton(withTitle: title)
@@ -88,7 +88,7 @@ extension UIActionSheet {
         if let title = cancelButtonTitle {
             actionSheet.cancelButtonIndex = actionSheet.addButton(withTitle: title)
         }
-        return actionSheet.promisedShowInView(view)
+        return actionSheet.promisedShow(in: view)
     }
 }
 
