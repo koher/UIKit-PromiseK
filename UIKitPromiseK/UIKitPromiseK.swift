@@ -3,9 +3,9 @@ import PromiseK
 
 extension UIView {
     public class func promisedAnimate(withDuration duration: TimeInterval, delay: TimeInterval = 0.0, options: UIViewAnimationOptions = [UIViewAnimationOptions.curveEaseInOut], animations: @escaping () -> Void) -> Promise<Bool> {
-        return Promise<Bool> { resolve in
+        return Promise<Bool> { fulfill in
             UIView.animate(withDuration: duration, delay: delay, options: options, animations: animations) { finished in
-                resolve(Promise(finished))
+                fulfill(finished)
             }
         }
     }
@@ -13,11 +13,11 @@ extension UIView {
 
 extension UIViewController {
     public func promisedPresentAlertController<T>(withTitle title: String? = nil, message: String? = nil, preferredStyle: UIAlertControllerStyle, buttons: [(title: String, style: UIAlertActionStyle, value: T)], configurePopoverPresentation: ((UIPopoverPresentationController) -> ())? = nil) -> Promise<T> {
-        return Promise { resolve in
+        return Promise { fulfill in
             let alertController = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
             for button in buttons {
                 alertController.addAction(UIAlertAction(title: button.title, style: button.style) { action in
-                    resolve(Promise(button.value))
+                    fulfill(button.value)
                 })
             }
             _ = alertController.popoverPresentationController.map { configurePopoverPresentation?($0) }
@@ -47,22 +47,22 @@ extension UIAlertView {
 class AlertViewDelegate: NSObject, UIAlertViewDelegate {
     fileprivate var zelf: AlertViewDelegate!
     
-    fileprivate var resolve: ((Promise<Int>) -> Void)!
+    fileprivate var fulfill: ((Int) -> Void)!
     fileprivate var promise: Promise<Int>!
     
     override init() {
         super.init()
         
         zelf = self
-        promise = Promise<Int> { resolve in
-            self.resolve = resolve
+        promise = Promise<Int> { fulfill in
+            self.fulfill = fulfill
         }
     }
     
     func alertView(_ alertView: UIAlertView, clickedButtonAt buttonIndex: Int) {
-        resolve(Promise(buttonIndex))
+        fulfill(buttonIndex)
         
-        resolve = nil
+        fulfill = nil
         DispatchQueue.main.async {
             self.zelf = nil
         }
@@ -95,22 +95,22 @@ extension UIActionSheet {
 class ActionSheetDelegate: NSObject, UIActionSheetDelegate {
     fileprivate var zelf: ActionSheetDelegate!
     
-    fileprivate var resolve: ((Promise<Int>) -> Void)!
+    fileprivate var fulfill: ((Int) -> Void)!
     fileprivate var promise: Promise<Int>!
     
     override init() {
         super.init()
         
         zelf = self
-        promise = Promise { resolve in
-            self.resolve = resolve
+        promise = Promise { fulfill in
+            self.fulfill = fulfill
         }
     }
     
     func actionSheet(_ actionSheet: UIActionSheet, clickedButtonAt buttonIndex: Int) {
-        resolve(Promise(buttonIndex))
+        fulfill(buttonIndex)
 
-        resolve = nil
+        fulfill = nil
         DispatchQueue.main.async {
             self.zelf = nil
         }
